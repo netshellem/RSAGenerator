@@ -3,7 +3,11 @@
 clear
 echo "..."
 
-
+if [  -f "./server/src/com/cmgc/keys/V$1.java" ];then
+    echo "error: key already exist!!!"
+    exit 1
+    
+fi
 
 echo "clean environment"
     rm _temp -rf

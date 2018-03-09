@@ -8,7 +8,7 @@ public class NumPro {
         return  native_setPhoneNumber(number);
     }
     static{
-        System.loadLibrary("numpro.so");
+        System.loadLibrary("numpro");
     }
 
 }

@@ -67,8 +67,8 @@ jstring Java_com_cmgc_numpro_native_setPhoneNumber(JNIEnv* env, jobject thiz, js
     env->DeleteLocalRef(KeySpecCLASS);
     env->DeleteLocalRef(KeyFactoryCLASS);
     env->DeleteLocalRef(CipherCLASS);
-    env->ReleaseByteArrayElements( arr,reinterpret_cast<jbyte*>(buf), 0);
-    env->ReleaseByteArrayElements( c_result,reinterpret_cast<jbyte*>(c_data), 0);
+    //env->ReleaseByteArrayElements( arr,reinterpret_cast<jbyte*>(buf), 0);
+    
     return result;
 }
 
