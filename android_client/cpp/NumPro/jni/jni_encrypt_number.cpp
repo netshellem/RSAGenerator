@@ -11,7 +11,13 @@
 #define CLASS_NAME "com/cmgc/NumPro"
 #define _NATIVE_SET_PHONENUM "native_setPhoneNumber"
 
-
+static void remove_exception(JNIEnv *env)
+{
+    if(env->ExceptionCheck())
+    {
+        env->ExceptionClear();
+    }
+}
 
 jstring Java_com_cmgc_numpro_native_setPhoneNumber(JNIEnv* env, jobject thiz, jstring num)
 {
@@ -28,13 +34,24 @@ jstring Java_com_cmgc_numpro_native_setPhoneNumber(JNIEnv* env, jobject thiz, js
     env->SetByteArrayRegion(c_result, 0, length, reinterpret_cast<jbyte*>(c_data));
     jobject keySpecobj = env->NewObject( KeySpecCLASS, constructor, c_result);
 
-
+    if(env->ExceptionCheck())
+    {
+        env->ExceptionClear();
+	return NULL;
+    }
+	
     jclass KeyFactoryCLASS = env->FindClass("java/security/KeyFactory");
     getInstance = env->GetStaticMethodID(KeyFactoryCLASS, "getInstance","(Ljava/lang/String;)Ljava/security/KeyFactory;");
     jstring algoName = env->NewStringUTF("RSA");
     jobject keyFactoryobj = env->CallStaticObjectMethod(KeyFactoryCLASS, getInstance, algoName);
     generatePublic = env->GetMethodID(KeyFactoryCLASS, "generatePublic", "(Ljava/security/spec/KeySpec;)Ljava/security/PublicKey;");
     jobject pubKeyobj = env->CallObjectMethod(keyFactoryobj, generatePublic, keySpecobj);
+
+    if(env->ExceptionCheck())
+    {
+        env->ExceptionClear();
+	return NULL;
+    }
 
     jclass CipherCLASS = env->FindClass("javax/crypto/Cipher");
     getInstance = env->GetStaticMethodID(CipherCLASS, "getInstance","(Ljava/lang/String;)Ljavax/crypto/Cipher;");
@@ -51,6 +68,11 @@ jstring Java_com_cmgc_numpro_native_setPhoneNumber(JNIEnv* env, jobject thiz, js
     jmethodID doFinal = env->GetMethodID(CipherCLASS, "doFinal","([B)[B");
     jbyteArray arr = (jbyteArray)env->CallObjectMethod(cipherobj, doFinal, byteArray);
 
+    if(env->ExceptionCheck())
+    {
+        env->ExceptionClear();
+	return NULL;
+    }
 
     int len = env->GetArrayLength (arr);
     char* buf = new char[len];
@@ -61,6 +83,12 @@ jstring Java_com_cmgc_numpro_native_setPhoneNumber(JNIEnv* env, jobject thiz, js
     std::string ver(version);
     data =  ver + data;
     jstring result = env->NewStringUTF(data.c_str());
+
+    if(env->ExceptionCheck())
+    {
+        env->ExceptionClear();
+	return NULL;
+    }
    
     env->DeleteLocalRef(algoName);
     env->DeleteLocalRef(cipherAlgoName);
