@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>  
+      
+ 
+<project default="pack" name="Sort">  
+     
+    <property file="ant/builds.properties" />  
+  
+    <property name="src.dir" value="src/" />  
+      
+    <property name="classes.dir" value="ant/classes" />  
+  
+    <property name="lib.dir" value="lib" />  
+  
+    <property name="dist.dir" value="ant/dist" />  
+      
+    <path id="master-classpath">  
+        <fileset file="${lib.dir}/*.jar" />  
+        <pathelement path="${classes.dir}" />  
+    </path>  
+      
+ 
+    <target name="init">  
+        <echo message="  Available Targets:"/>    
+        <echo message="-------------------------------------------------------"/>    
+        <echo message="  init ${init}   ..."/>    
+        <echo message="-------------------------------------------------------"/>   
+    </target>  
+  
+ 
+    <target name="compile" depends="init" description="compile the source files">  
+
+        <delete dir="${classes.dir}" />  
+ 
+        <mkdir dir="${classes.dir}" />  
+
+        <javac srcdir="${src.dir}" destdir="${classes.dir}">   
+            <classpath refid="master-classpath" />  
+        </javac>  
+    </target>  
+  
+  
+
+    <target name="pack" description="make .jar file"  depends ="compile">  
+  
+        <delete dir="${dist.dir}" />  
+  
+        <mkdir dir="${dist.dir}" />   
+        <jar destfile="${dist.dir}/numpro_client.jar" basedir="${classes.dir}">    
+            <exclude name="**/*Test.*" />  
+        </jar>  
+  
+    </target>  
+     
+</project> 
