@@ -1,4 +1,10 @@
 # RSAGenerator
+Prerequisite:
+1. linux
+2. Java
+3. Ant
+4. android ndk-build
+
 This is RSA key Pair generator for android and Java.
 Usage:
     ./make.sh 10000001 (8 digit version number)
